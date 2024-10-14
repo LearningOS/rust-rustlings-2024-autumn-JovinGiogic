@@ -11,9 +11,8 @@
 // Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
-use std::collections::HashMap;
+use std::collections::{btree_map::Values, HashMap};
 
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum Progress {
@@ -30,12 +29,16 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
         }
     }
     count
+
 }
 
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
     // map is a hashmap with String keys and Progress values.
     // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    
+    // map.iter().filter(|x| x.value == value).count()  // 不能这样取值
+    map.iter().filter(|(_, v)| **v == value).count()
+    // map.values().filter(|x| *x == &value).count()  // map.values() 就是一个包含所有值的迭代器,更便捷
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -54,7 +57,12 @@ fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Pr
     // collection is a slice of hashmaps.
     // collection = [{ "variables1": Complete, "from_str": None, ... },
     //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    // collection.iter().filter(|map| map.iter().filter(|(_, v)| **v == value).count() > 0).sum()  // filter需要返回bool
+    // 所以这种情况应该用map, 用一个闭包函数来处理每个值 返回 闭包函数返回值的迭代器
+    collection.iter().map(|hash| hash.iter().filter(|(_, v)| **v == value).count()).sum()
+
+
+    // collection.iter().map(|map| count_iterator(map, value)).sum()  // 上面的闭包就是之前实现的函数
 }
 
 #[cfg(test)]
