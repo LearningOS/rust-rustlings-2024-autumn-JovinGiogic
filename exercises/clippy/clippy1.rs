@@ -9,12 +9,12 @@
 // Execute `rustlings hint clippy1` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
 
 use std::f32;
 
 fn main() {
-    let pi = 3.14f32;
+    // let pi = 3.14f32;  // 使用了 3.14 作为 π 的近似值，
+    let pi = std::f32::consts::PI;  // 但标准库中提供了更精确的值。
     let radius = 5.00f32;
 
     let area = pi * f32::powi(radius, 2);
